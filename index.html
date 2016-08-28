@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <style>
+      .col-6 {
+        width: 50%;
+        position: relative;
+        float: left;
+      }
+      select {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+  <div id="content" class="col-6">
+    <select name="items[]" id="items[]" style="display: inline;">
+      <option value="Unlimited 1GB">Unlimited 1GB</option>
+      <option value="Unlimited 2GB<">Unlimited 2GB</option>
+      <option value="Unlimited 5GB">Unlimited 5GB</option>
+      <option value="1 GB Data-pack">1 GB Data-pack</option>
+    </select>
+  <button onclick="addInput()">Add Item</button>
+</div>
+<div id="content2" class="col-6">
+  <input type="text" name="promo_code" id="promo_code" placeholder="Promo Code">
+  <input type="text" name="total" id="total"  placeholder="Total" disabled>
+  <button onclick="onTotal()">Submit</button>
+</div>
+
+<script>
+optionA = ["Unlimited 1GB", "Unlimited 2GB", "Unlimited 5GB", "1 GB Data-pack"];
+optionB = [];
+
+function onTotal(){
+  var ult_small = 0;
+  var ult_meduim = 0;
+  var ult_large = 0;
+  var gb = 0;
+  var total = 0;
+  var fields = document.getElementsByName('items[]');
+   for(var i = 0; i < fields.length; i++) {
+       if(fields[i].value == "Unlimited 1GB"){
+        ult_small++;
+       }else if(fields[i].value == "Unlimited 2GB"){
+        ult_meduim++;
+       }else if(fields[i].value == "Unlimited 5GB"){
+        ult_large++;
+       }else if(fields[i].value == "1 GB Data-pack"){
+        gb++;
+       }
+   }
+   if(ult_small == 3){
+      total += 24.90 * 2;
+   }else{
+      total += 24.90 * ult_small;
+   }
+   
+   if(ult_large >= 3){
+      total += 39.90 * ult_large;
+   }else{
+      total += 44.90 * ult_large;
+   }
+
+    total += 29.90 * ult_meduim;
+    total += 9.90 * gb;
+
+    if(ult_small != 0){
+      optionB.push(ult_small + " x Unlimited 1GB")
+    }
+
+    if(ult_meduim != 0){
+      optionB.push(ult_meduim + " x Unlimited 2GB")
+      optionB.push(ult_meduim + " x 1 GB Data-pack (Free)")
+    }
+
+    if(ult_large != 0){
+      optionB.push(ult_large + " x Unlimited 5GB")
+    }
+
+    if(gb != 0){
+      optionB.push(gb + " x 1 GB Data-pack")
+    }
+
+
+   if(document.getElementById('promo_code').value == "I<3AMAYSIM"){
+      var discount = total * .10;
+      total = total - discount;
+   }
+  total = Math.ceil(total * 100) / 100
+  document.getElementById('total').value = total
+
+  var myDiv = document.getElementById("content2");
+  var newDiv = document.createElement("div");
+  inHTML="";
+  for (var i = 0; i < optionB.length; i++) {
+      inHTML += optionB[i] + "<br/>";
+  }
+  newDiv.innerHTML = inHTML;
+  myDiv.appendChild(newDiv);
+}
+
+function addInput() {
+  var myDiv = document.getElementById("content");
+  var selectList = document.createElement("select");
+  selectList.name = "items[]";
+  selectList.id = "items[]";
+  myDiv.appendChild(selectList);
+  for (var i = 0; i < optionA.length; i++) {
+      var option = document.createElement("option");
+      option.value = optionA[i];
+      option.text = optionA[i];
+      selectList.appendChild(option);
+  }
+}
+</script>
+  </body>
+</html>
